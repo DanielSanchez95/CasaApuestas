@@ -2,8 +2,15 @@ package co.edu.unbosque.model;
 
 public class Baloto extends Apuesta {
 
-	public Baloto() {
-		// TODO Auto-generated constructor stub
+	private Long numero;
+
+	public Long getNumero() {
+		return numero;
 	}
 
+	public void setNumero(Long numero) {
+		this.numero = numero;
+	}
+
+	
 }

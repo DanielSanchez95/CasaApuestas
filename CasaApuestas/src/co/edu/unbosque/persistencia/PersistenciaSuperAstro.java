@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.edu.unbosque.model.Juego;
+import co.edu.unbosque.model.SuperAstro;
 
 public class PersistenciaSuperAstro {
 
@@ -35,24 +36,27 @@ public class PersistenciaSuperAstro {
 		}
 	}
 
-	public void guardarEnArchivo(List<Juego> lista) {
+	public boolean guardarEnArchivo(List<SuperAstro> lista) {
 		try {
 			salidaBinario = new ObjectOutputStream(new FileOutputStream(archivo));
 			salidaBinario.writeObject(lista);
 			salidaBinario.close();
+			return true;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 
-	public List<Juego> leerArchivo() {
-		List<Juego> lista = new ArrayList<Juego>();
+	public List<SuperAstro> leerArchivo() {
+		List<SuperAstro> lista = new ArrayList<SuperAstro>();
 		if (archivo.length() != 0) {
 			try {
 				entradaBinario = new ObjectInputStream(new FileInputStream(archivo));
-				lista = (List<Juego>) entradaBinario.readObject();
+				lista = (List<SuperAstro>) entradaBinario.readObject();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

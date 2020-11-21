@@ -1,10 +1,11 @@
 package co.edu.unbosque.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Apuesta {
+public class Apuesta implements Serializable{
 
-	private Long sede;
+	private String sede;
 	private Long cedula;
 	private Date fecha;
 	private Long valor;
@@ -12,11 +13,11 @@ public class Apuesta {
 	public Apuesta() {
 	}
 
-	public Long getSede() {
+	public String getSede() {
 		return sede;
 	}
 
-	public void setSede(Long sede) {
+	public void setSede(String sede) {
 		this.sede = sede;
 	}
 

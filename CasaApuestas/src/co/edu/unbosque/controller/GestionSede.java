@@ -3,9 +3,7 @@ package co.edu.unbosque.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.edu.unbosque.model.Apostador;
 import co.edu.unbosque.model.SedeCasaApuesta;
-import co.edu.unbosque.persistencia.PersistenciaApostador;
 import co.edu.unbosque.persistencia.PersistenciaSede;
 
 public class GestionSede {
@@ -18,11 +16,16 @@ public class GestionSede {
 		this.listaSede = persistencia.leerArchivo();
 	}
 
-	public void crearSede(SedeCasaApuesta objApostador) {
-		this.listaSede.add(objApostador);
-		persistencia.guardarEnArchivo(this.listaSede);
-		this.listaSede = persistencia.leerArchivo();
-		GestionCasaApuesta.getInstance().getCasa().setNumeroSede(this.listaSede.size());
+	public boolean crearSede(SedeCasaApuesta objApostador) {
+		try {
+			this.listaSede.add(objApostador);
+			persistencia.guardarEnArchivo(this.listaSede);
+			this.listaSede = persistencia.leerArchivo();
+			GestionCasaApuesta.getInstance().getCasa().setNumeroSede(this.listaSede.size());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	public SedeCasaApuesta buscarPorNombre(String nombre) {
