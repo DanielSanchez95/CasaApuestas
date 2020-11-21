@@ -10,6 +10,7 @@ import co.edu.unbosque.model.Apostador;
 import co.edu.unbosque.model.Baloto;
 import co.edu.unbosque.model.CasaApuesta;
 import co.edu.unbosque.model.Juego;
+import co.edu.unbosque.model.Marcadores;
 import co.edu.unbosque.model.SedeCasaApuesta;
 import co.edu.unbosque.model.SuperAstro;
 import co.edu.unbosque.view.Apostadores;
@@ -150,6 +151,24 @@ public class HomeController implements ActionListener {
 							objGestionSuperAstro.listarJuego();
 						}else {
 							JOptionPane.showMessageDialog(null, "Error al crear un Super Astro", "Error", 2);
+
+						}
+					}
+				}else {
+					JOptionPane.showMessageDialog(null, "Todos los campos deben ser diligenciados", "Error", 2);
+				}
+			}
+			//Crear Marcadores
+			else if(formCrearMarcador.getBtnCreaMarcador() == e.getSource()) {
+				if(validarCamposMarcador()) {
+					if(contruirObjMarcador()!=null) {
+						GestionMarcador objGestionMarcador= new GestionMarcador(); 
+						if(objGestionMarcador.crearMarcador(contruirObjMarcador())){
+							JOptionPane.showMessageDialog(null, "Marcadores creados con exito", "Exitoso", 2);
+							cerrarFormSuperAstro();
+							objGestionMarcador.listarJuego();
+						}else {
+							JOptionPane.showMessageDialog(null, "Error al crear marcadores", "Error", 2);
 
 						}
 					}
@@ -337,6 +356,11 @@ public class HomeController implements ActionListener {
 		formCrearMarcador.setVisible(true);
 		apuestas.setVisible(false);
 	}
+	
+	public void cerrarFormMarcador() {
+		formCrearMarcador.setVisible(false);
+		apuestas.setVisible(true);
+	}
 
 	public boolean validarCamposSedes() {
 		boolean camposValidos = true;
@@ -366,6 +390,44 @@ public class HomeController implements ActionListener {
 		if (!campoDiligenciado(formCrearSuperAstro.getTxtSigno().getSelectedItem().toString()))
 			camposValidos = false;
 
+		return camposValidos;
+	}
+	
+	public boolean validarCamposMarcador() {
+		boolean camposValidos = true;
+		if (!campoDiligenciado(formCrearMarcador.getTxtCedula().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtValor().getText()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido1().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido2().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido3().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido4().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido5().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido6().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido7().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido8().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido9().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido10().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido11().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido12().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido13().getSelectedItem().toString()))
+			camposValidos = false;
+		if (!campoDiligenciado(formCrearMarcador.getTxtPartido14().getSelectedItem().toString()))
+			camposValidos = false;
+		
 		return camposValidos;
 	}
 
@@ -404,6 +466,32 @@ public class HomeController implements ActionListener {
 				return null;
 			}
 			return objSuperAstro;
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "El valor o numero son invalidos", "Error", 2);
+			return null;
+		}
+	}
+	public Marcadores contruirObjMarcador() {
+		try {
+			Marcadores objMarcador = new Marcadores();
+			objMarcador.setCedula(Long.parseLong(formCrearMarcador.getTxtCedula().getSelectedItem().toString()));
+			objMarcador.setSede(formCrearMarcador.getTxtSede().getSelectedItem().toString());
+			objMarcador.setFecha(new Date());
+			objMarcador.setPartido1(formCrearMarcador.getTxtPartido1().getSelectedItem().toString());
+			objMarcador.setPartido2(formCrearMarcador.getTxtPartido2().getSelectedItem().toString());
+			objMarcador.setPartido3(formCrearMarcador.getTxtPartido3().getSelectedItem().toString());
+			objMarcador.setPartido4(formCrearMarcador.getTxtPartido4().getSelectedItem().toString());
+			objMarcador.setPartido5(formCrearMarcador.getTxtPartido5().getSelectedItem().toString());
+			objMarcador.setPartido6(formCrearMarcador.getTxtPartido6().getSelectedItem().toString());
+			objMarcador.setPartido7(formCrearMarcador.getTxtPartido7().getSelectedItem().toString());
+			objMarcador.setPartido8(formCrearMarcador.getTxtPartido8().getSelectedItem().toString());
+			objMarcador.setPartido9(formCrearMarcador.getTxtPartido9().getSelectedItem().toString());
+			objMarcador.setPartido10(formCrearMarcador.getTxtPartido10().getSelectedItem().toString());
+			objMarcador.setPartido11(formCrearMarcador.getTxtPartido11().getSelectedItem().toString());
+			objMarcador.setPartido12(formCrearMarcador.getTxtPartido12().getSelectedItem().toString());
+			objMarcador.setPartido13(formCrearMarcador.getTxtPartido13().getSelectedItem().toString());
+			objMarcador.setPartido14(formCrearMarcador.getTxtPartido14().getSelectedItem().toString());
+			return objMarcador;
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "El valor o numero son invalidos", "Error", 2);
 			return null;
