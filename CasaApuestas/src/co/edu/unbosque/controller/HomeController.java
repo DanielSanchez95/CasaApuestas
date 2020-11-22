@@ -21,9 +21,11 @@ import co.edu.unbosque.view.FormCrearJuego;
 import co.edu.unbosque.view.FormCrearMarcador;
 import co.edu.unbosque.view.FormCrearSede;
 import co.edu.unbosque.view.FormCrearSuperAstro;
+import co.edu.unbosque.view.HistoricoVentas;
 import co.edu.unbosque.view.HomeCasaApuesta;
 import co.edu.unbosque.view.Inicio;
 import co.edu.unbosque.view.Juegos;
+import co.edu.unbosque.view.Reportes;
 import co.edu.unbosque.view.Sedes;
 
 public class HomeController implements ActionListener {
@@ -34,12 +36,18 @@ public class HomeController implements ActionListener {
 	private Apostadores apostadores;
 	private Juegos juegos;
 	private Sedes sedes;
+	private Reportes reportes;
+	
+	private HistoricoVentas historicoVentas;
+	
 	private FormCrearJuego formCrearJuego;
 	private FormCrearSede formCrearSede;
 	private FormCrearApostador formCrearApostador;
 	private FormCrearSuperAstro formCrearSuperAstro;
 	private FormCrearBaloto formCrearBaloto;
 	private FormCrearMarcador formCrearMarcador;
+	
+	
 
 	public HomeController() {
 		super();
@@ -55,6 +63,10 @@ public class HomeController implements ActionListener {
 		apuestas.setVisible(false);
 		juegos = new Juegos(this);
 		juegos.setVisible(false);
+		reportes = new Reportes(this);
+		reportes.setVisible(false);
+		historicoVentas = new HistoricoVentas(this);
+		historicoVentas.setVisible(false);
 		formCrearJuego = new FormCrearJuego(this);
 		formCrearJuego.setVisible(false);
 		formCrearSede = new FormCrearSede(this);
@@ -95,6 +107,14 @@ public class HomeController implements ActionListener {
 			// Home Apuestas
 			else if (home.getBtnApuestas() == e.getSource()) {
 				abrirHomeApuestas();
+			}
+			// Home Reportes
+			else if(home.getBtnReportes() == e.getSource()) {
+				abrirHomeReportes();
+			}
+			// Top Sedes
+			else if (reportes.getBtnAbrirTopSedes() == e.getSource()) {
+				abrirHistoricoVentas();
 			}
 			// FORMULARIOS
 			// Formulario Creacion Juego
@@ -306,6 +326,17 @@ public class HomeController implements ActionListener {
 	public void abrirHomeApuestas() {
 		inicio.setVisible(false);
 		apuestas.setVisible(true);
+	}
+	
+	public void abrirHomeReportes() {
+		inicio.setVisible(false);
+		reportes.setVisible(true);
+	}
+	
+	//TOPS
+	public void abrirHistoricoVentas() {
+		reportes.setVisible(false);
+		historicoVentas.setVisible(true);
 	}
 
 	// FORMULARIOS

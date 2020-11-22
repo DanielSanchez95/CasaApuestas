@@ -28,7 +28,6 @@ public class Juegos extends JFrame {
 		super();
 		listener = controller;
 		
-		
 		JLabel etiqueta = new JLabel();
 		panel.add(tablaJuegos);
 		cargarJuegos();
@@ -36,7 +35,7 @@ public class Juegos extends JFrame {
 		etiqueta.setIcon(new ImageIcon("Imagenes/Juegos.jpg"));
 		etiqueta.setBounds(0,0, 600, 600);
 		panel.setLayout(null);
-		this.setTitle(" Juegos");
+		this.setTitle(" Top de ventas");
 		this.getContentPane().add(panel);
 		this.setSize(600,600);
 		setLocationRelativeTo(null);
