@@ -15,6 +15,7 @@ import co.edu.unbosque.model.CasaApuesta;
 import co.edu.unbosque.model.Juego;
 import co.edu.unbosque.model.Marcadores;
 import co.edu.unbosque.model.PremioBalotoModel;
+import co.edu.unbosque.model.PremioMarcadorModel;
 import co.edu.unbosque.model.PremioSuperAstroModel;
 import co.edu.unbosque.model.SedeCasaApuesta;
 import co.edu.unbosque.model.SuperAstro;
@@ -31,6 +32,7 @@ import co.edu.unbosque.view.HomeCasaApuesta;
 import co.edu.unbosque.view.Inicio;
 import co.edu.unbosque.view.Juegos;
 import co.edu.unbosque.view.PremioBaloto;
+import co.edu.unbosque.view.PremioMarcador;
 import co.edu.unbosque.view.PremioSuperAstro;
 import co.edu.unbosque.view.Premios;
 import co.edu.unbosque.view.Reportes;
@@ -49,6 +51,7 @@ public class HomeController implements ActionListener {
 
 	private PremioBaloto premioBaloto;
 	private PremioSuperAstro premiosuperAstro;
+	private PremioMarcador premioMarcador;
 
 	private HistoricoVentas historicoVentas;
 
@@ -82,6 +85,8 @@ public class HomeController implements ActionListener {
 		premioBaloto.setVisible(false);
 		premiosuperAstro = new PremioSuperAstro(this);
 		premiosuperAstro.setVisible(false);
+		premioMarcador = new PremioMarcador(this);
+		premioMarcador.setVisible(false);
 
 		historicoVentas = new HistoricoVentas(this);
 		historicoVentas.setVisible(false);
@@ -141,9 +146,15 @@ public class HomeController implements ActionListener {
 				premios.setVisible(false);
 				premioBaloto.setVisible(true);
 			}
+			// Registrar Premio Super Astro
 			else if (premios.getBtnRegistrarSuperAstro() == e.getSource()) {
 				premios.setVisible(false);
 				premiosuperAstro.setVisible(true);
+			}
+			// Registrar Premio Marcadores
+			else if (premios.getBtnRegistrarMarcadores() == e.getSource()) {
+				premios.setVisible(false);
+				premioMarcador.setVisible(true);
 			}
 			// TOPS
 			// Top Sedes
@@ -350,7 +361,6 @@ public class HomeController implements ActionListener {
 					JOptionPane.showMessageDialog(null, "Todos los campos deben ser diligenciados", "Error", 2);
 				}
 			}
-			
 
 			// Crear Premio Super Astro
 			else if (premiosuperAstro.getBtnRegistrarNumero() == e.getSource()) {
@@ -360,7 +370,9 @@ public class HomeController implements ActionListener {
 						PremioSuperAstroModel objPremio = new PremioSuperAstroModel();
 						objPremio.setFecha(new Date());
 						objPremio.setNumero(Long.parseLong(premiosuperAstro.getTxtNumero().getText()));
-						List<String> listaGanadores = validarGanadoresSuperAstro(premiosuperAstro.getTxtNumero().getText(), premiosuperAstro.getTxtSigno().getSelectedItem().toString());
+						List<String> listaGanadores = validarGanadoresSuperAstro(
+								premiosuperAstro.getTxtNumero().getText(),
+								premiosuperAstro.getTxtSigno().getSelectedItem().toString());
 						objPremio.setListaGanadores(listaGanadores);
 						objPremiacionSuperAstro.crearPremioSuperAstro(objPremio);
 						JOptionPane.showMessageDialog(null,
@@ -372,6 +384,40 @@ public class HomeController implements ActionListener {
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Todos los campos deben ser diligenciados", "Error", 2);
+				}
+			}
+
+			// Crear Premio Marcadores
+			else if (premioMarcador.getBtnRegistrarPremio() == e.getSource()) {
+				if (validarRegistroMarcadores()) {
+					GestionPremiacionMarcador objPremiacionMarcadores = new GestionPremiacionMarcador();
+					PremioMarcadorModel objPremio = new PremioMarcadorModel();
+					objPremio.setFecha(new Date());
+//					objPremio.setNumero(Long.parseLong(premiosuperAstro.getTxtNumero().getText()));
+					objPremio.setPartido1(premioMarcador.getTxtPartido1().getSelectedItem().toString());
+					objPremio.setPartido2(premioMarcador.getTxtPartido2().getSelectedItem().toString());
+					objPremio.setPartido3(premioMarcador.getTxtPartido3().getSelectedItem().toString());
+					objPremio.setPartido4(premioMarcador.getTxtPartido4().getSelectedItem().toString());
+					objPremio.setPartido5(premioMarcador.getTxtPartido5().getSelectedItem().toString());
+					objPremio.setPartido6(premioMarcador.getTxtPartido6().getSelectedItem().toString());
+					objPremio.setPartido7(premioMarcador.getTxtPartido7().getSelectedItem().toString());
+					objPremio.setPartido8(premioMarcador.getTxtPartido8().getSelectedItem().toString());
+					objPremio.setPartido9(premioMarcador.getTxtPartido9().getSelectedItem().toString());
+					objPremio.setPartido10(premioMarcador.getTxtPartido10().getSelectedItem().toString());
+					objPremio.setPartido11(premioMarcador.getTxtPartido11().getSelectedItem().toString());
+					objPremio.setPartido12(premioMarcador.getTxtPartido12().getSelectedItem().toString());
+					objPremio.setPartido13(premioMarcador.getTxtPartido13().getSelectedItem().toString());
+					objPremio.setPartido14(premioMarcador.getTxtPartido14().getSelectedItem().toString());
+
+					List<String> listaGanadores = validarGanadoresMarcadores(objPremio);
+					objPremio.setListaGanadores(listaGanadores);
+					objPremiacionMarcadores.crearPremioMarcador(objPremio);
+					JOptionPane.showMessageDialog(null,
+							"Resultado registrado. \n Hay " + listaGanadores.size() + " ganadores.", "OK", 2);
+				} else {
+					JOptionPane.showMessageDialog(null, "Ya existe un registro para el dia de hoy.", "OK", 2);
+					premiosuperAstro.setVisible(false);
+					premios.setVisible(true);
 				}
 			}
 
@@ -639,8 +685,34 @@ public class HomeController implements ActionListener {
 		}
 		return listaGanadores;
 	}
-
 	
+
+	public List<String> validarGanadoresMarcadores(PremioMarcadorModel objPremioMarcadorModel) {
+		List<String> listaGanadores = new ArrayList<>();
+		GestionMarcador objGestionMarcador = new GestionMarcador();
+		List<Marcadores> listaMarcadores = objGestionMarcador.listarJuego();
+		for (Marcadores marcador: listaMarcadores) {
+			if (tomarFecha(marcador.getFecha()).equals(tomarFecha(new Date()))
+					&& String.valueOf(marcador.getPartido1()).equals(objPremioMarcadorModel.getPartido1().toString())
+					&& String.valueOf(marcador.getPartido2()).equals(objPremioMarcadorModel.getPartido2().toString())
+					&& String.valueOf(marcador.getPartido3()).equals(objPremioMarcadorModel.getPartido3().toString())
+					&& String.valueOf(marcador.getPartido4()).equals(objPremioMarcadorModel.getPartido4().toString())
+					&& String.valueOf(marcador.getPartido5()).equals(objPremioMarcadorModel.getPartido5().toString())
+					&& String.valueOf(marcador.getPartido6()).equals(objPremioMarcadorModel.getPartido6().toString())
+					&& String.valueOf(marcador.getPartido7()).equals(objPremioMarcadorModel.getPartido7().toString())
+					&& String.valueOf(marcador.getPartido8()).equals(objPremioMarcadorModel.getPartido8().toString())
+					&& String.valueOf(marcador.getPartido9()).equals(objPremioMarcadorModel.getPartido9().toString())
+					&& String.valueOf(marcador.getPartido10()).equals(objPremioMarcadorModel.getPartido10().toString())
+					&& String.valueOf(marcador.getPartido11()).equals(objPremioMarcadorModel.getPartido11().toString())
+					&& String.valueOf(marcador.getPartido12()).equals(objPremioMarcadorModel.getPartido12().toString())
+					&& String.valueOf(marcador.getPartido13()).equals(objPremioMarcadorModel.getPartido13().toString())
+					&& String.valueOf(marcador.getPartido14()).equals(objPremioMarcadorModel.getPartido14().toString())) {
+				listaGanadores.add(marcador.getCedula().toString());
+			}
+		}
+		return listaGanadores;
+	}
+
 	public String tomarFecha(Date fecha) {
 		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
 		return formatoFecha.format(fecha);
@@ -660,7 +732,7 @@ public class HomeController implements ActionListener {
 		return existeRegistro;
 
 	}
-	
+
 	public boolean validarRegistroSuperAstro() {
 		GestionPremiacionSuperAstro objGPB = new GestionPremiacionSuperAstro();
 		List<PremioSuperAstroModel> listaPB = objGPB.listarPremioSuperAstro();
@@ -672,6 +744,20 @@ public class HomeController implements ActionListener {
 			}
 		}
 		return existeRegistro;
-		
+
+	}
+	
+	public boolean validarRegistroMarcadores() {
+		GestionPremiacionMarcador objGPM = new GestionPremiacionMarcador();
+		List<PremioMarcadorModel> listaPM = objGPM.listarPremioMarcador();
+		Boolean existeRegistro = true;
+		for (PremioMarcadorModel premioMarcadorModel : listaPM) {
+			if (tomarFecha(premioMarcadorModel.getFecha()).equals(tomarFecha(new Date()))) {
+				existeRegistro = false;
+				break;
+			}
+		}
+		return existeRegistro;
+
 	}
 }

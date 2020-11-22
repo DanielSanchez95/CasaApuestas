@@ -11,7 +11,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.edu.unbosque.model.PremioMarcador;
+import co.edu.unbosque.model.PremioMarcadorModel;
 
 public class PersistenciaPremiacionMarcador {
 
@@ -35,7 +35,7 @@ public class PersistenciaPremiacionMarcador {
 		}
 	}
 
-	public boolean guardarEnArchivo(List<PremioMarcador> lista) {
+	public boolean guardarEnArchivo(List<PremioMarcadorModel> lista) {
 		try {
 			salidaBinario = new ObjectOutputStream(new FileOutputStream(archivo));
 			salidaBinario.writeObject(lista);
@@ -50,12 +50,12 @@ public class PersistenciaPremiacionMarcador {
 		}
 	}
 
-	public List<PremioMarcador> leerArchivo() {
-		List<PremioMarcador> lista = new ArrayList<PremioMarcador>();
+	public List<PremioMarcadorModel> leerArchivo() {
+		List<PremioMarcadorModel> lista = new ArrayList<PremioMarcadorModel>();
 		if (archivo.length() != 0) {
 			try {
 				entradaBinario = new ObjectInputStream(new FileInputStream(archivo));
-				lista = (List<PremioMarcador>) entradaBinario.readObject();
+				lista = (List<PremioMarcadorModel>) entradaBinario.readObject();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.edu.unbosque.model.Baloto;
-import co.edu.unbosque.model.PremioMarcador;
+import co.edu.unbosque.model.PremioMarcadorModel;
 import co.edu.unbosque.persistencia.PersistenciaBaloto;
 import co.edu.unbosque.persistencia.PersistenciaPremiacionBaloto;
 import co.edu.unbosque.persistencia.PersistenciaPremiacionMarcador;
@@ -12,14 +12,14 @@ import co.edu.unbosque.persistencia.PersistenciaPremiacionMarcador;
 public class GestionPremiacionMarcador {
 	
 	private PersistenciaPremiacionMarcador persistencia;
-	private List<PremioMarcador> listaPremio= new ArrayList<>();
+	private List<PremioMarcadorModel> listaPremio= new ArrayList<>();
 
 	public GestionPremiacionMarcador() {
 		persistencia = new PersistenciaPremiacionMarcador();
 		this.listaPremio = persistencia.leerArchivo();
 	}
 
-	public boolean crearPremioMarcador(PremioMarcador objJuego) {
+	public boolean crearPremioMarcador(PremioMarcadorModel objJuego) {
 		this.listaPremio = this.listarPremioMarcador();
 		listaPremio.add(objJuego);
 		if(persistencia.guardarEnArchivo(listaPremio)) {
@@ -29,7 +29,7 @@ public class GestionPremiacionMarcador {
 		}
 	}
 	
-	public List<PremioMarcador> listarPremioMarcador(){
+	public List<PremioMarcadorModel> listarPremioMarcador(){
 		return persistencia.leerArchivo();
 	}
 }
