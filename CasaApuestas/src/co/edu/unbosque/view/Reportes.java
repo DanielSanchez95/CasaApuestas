@@ -38,7 +38,7 @@ public class Reportes extends JFrame {
 		
 		
 		btnAbrirTopSedes.setBounds(100, 100, 150, 50);
-		btnAbrirTopSedes.setText("Historico");
+		btnAbrirTopSedes.setText("Top sedes");
 		btnAbrirTopSedes.setBackground(Color.WHITE);
 		btnAbrirTopSedes.addActionListener(listener);
 		
@@ -53,7 +53,7 @@ public class Reportes extends JFrame {
 		btnAbrirTopTipoApuesta.addActionListener(listener);
 		
 		btnAbrirHistorico.setBounds(300, 200, 150, 50);
-		btnAbrirHistorico.setText("Top sedes");
+		btnAbrirHistorico.setText("Historico");
 		btnAbrirHistorico.setBackground(Color.WHITE);
 		btnAbrirHistorico.addActionListener(listener);
 		

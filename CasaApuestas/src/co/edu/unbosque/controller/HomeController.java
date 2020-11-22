@@ -37,6 +37,7 @@ import co.edu.unbosque.view.PremioSuperAstro;
 import co.edu.unbosque.view.Premios;
 import co.edu.unbosque.view.Reportes;
 import co.edu.unbosque.view.Sedes;
+import co.edu.unbosque.view.TopSedes;
 
 public class HomeController implements ActionListener {
 
@@ -54,6 +55,7 @@ public class HomeController implements ActionListener {
 	private PremioMarcador premioMarcador;
 
 	private HistoricoVentas historicoVentas;
+	private TopSedes topSedes;
 
 	private FormCrearJuego formCrearJuego;
 	private FormCrearSede formCrearSede;
@@ -90,6 +92,8 @@ public class HomeController implements ActionListener {
 
 		historicoVentas = new HistoricoVentas(this);
 		historicoVentas.setVisible(false);
+		topSedes = new TopSedes(this);
+		topSedes.setVisible(false);
 
 		formCrearJuego = new FormCrearJuego(this);
 		formCrearJuego.setVisible(false);
@@ -157,9 +161,13 @@ public class HomeController implements ActionListener {
 				premioMarcador.setVisible(true);
 			}
 			// TOPS
+			// Historico
+			else if (reportes.getBtnAbrirHistorico() == e.getSource()) {
+				abrirHistoricoVentas();
+			}
 			// Top Sedes
 			else if (reportes.getBtnAbrirTopSedes() == e.getSource()) {
-				abrirHistoricoVentas();
+				abrirTopSedes();
 			}
 			// FORMULARIOS
 			// Formulario Creacion Juego
@@ -469,6 +477,11 @@ public class HomeController implements ActionListener {
 	public void abrirHistoricoVentas() {
 		reportes.setVisible(false);
 		historicoVentas.setVisible(true);
+	}
+	
+	public void abrirTopSedes() {
+		reportes.setVisible(false);
+		topSedes.setVisible(true);
 	}
 
 	// FORMULARIOS
