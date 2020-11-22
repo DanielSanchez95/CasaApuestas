@@ -16,6 +16,7 @@ public class HomeCasaApuesta extends JFrame {
 	JButton btnJuegos = new JButton();
 	JButton btnApuestas = new JButton();
 	JButton btnReportes = new JButton();
+	JButton btnPremiacion = new JButton();
 	
 	ActionListener listener;
 	
@@ -40,6 +41,7 @@ public class HomeCasaApuesta extends JFrame {
 		panel.add(btnJuegos);
 		panel.add(btnApuestas);
 		panel.add(btnReportes);
+		panel.add(btnPremiacion);
 
 		
 		btnSedes.setBounds(130, 200, 150, 50);
@@ -66,6 +68,11 @@ public class HomeCasaApuesta extends JFrame {
 		btnReportes.setText("Reportes");
 		btnReportes.setBackground(Color.WHITE);
 		btnReportes.addActionListener(listener);
+		
+		btnPremiacion.setBounds(330, 400, 150, 50);
+		btnPremiacion.setText("Premiacion");
+		btnPremiacion.setBackground(Color.WHITE);
+		btnPremiacion.addActionListener(listener);
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
@@ -108,6 +115,14 @@ public class HomeCasaApuesta extends JFrame {
 
 	public void setBtnReportes(JButton btnReportes) {
 		this.btnReportes = btnReportes;
+	}
+
+	public JButton getBtnPremiacion() {
+		return btnPremiacion;
+	}
+
+	public void setBtnPremiacion(JButton btnPremiacion) {
+		this.btnPremiacion = btnPremiacion;
 	}
 	
 	

@@ -2,7 +2,10 @@ package co.edu.unbosque.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -11,6 +14,7 @@ import co.edu.unbosque.model.Baloto;
 import co.edu.unbosque.model.CasaApuesta;
 import co.edu.unbosque.model.Juego;
 import co.edu.unbosque.model.Marcadores;
+import co.edu.unbosque.model.PremioBalotoModel;
 import co.edu.unbosque.model.SedeCasaApuesta;
 import co.edu.unbosque.model.SuperAstro;
 import co.edu.unbosque.view.Apostadores;
@@ -25,6 +29,8 @@ import co.edu.unbosque.view.HistoricoVentas;
 import co.edu.unbosque.view.HomeCasaApuesta;
 import co.edu.unbosque.view.Inicio;
 import co.edu.unbosque.view.Juegos;
+import co.edu.unbosque.view.PremioBaloto;
+import co.edu.unbosque.view.Premios;
 import co.edu.unbosque.view.Reportes;
 import co.edu.unbosque.view.Sedes;
 
@@ -37,17 +43,18 @@ public class HomeController implements ActionListener {
 	private Juegos juegos;
 	private Sedes sedes;
 	private Reportes reportes;
-	
+	private Premios premios;
+
+	private PremioBaloto premioBaloto;
+
 	private HistoricoVentas historicoVentas;
-	
+
 	private FormCrearJuego formCrearJuego;
 	private FormCrearSede formCrearSede;
 	private FormCrearApostador formCrearApostador;
 	private FormCrearSuperAstro formCrearSuperAstro;
 	private FormCrearBaloto formCrearBaloto;
 	private FormCrearMarcador formCrearMarcador;
-	
-	
 
 	public HomeController() {
 		super();
@@ -65,8 +72,15 @@ public class HomeController implements ActionListener {
 		juegos.setVisible(false);
 		reportes = new Reportes(this);
 		reportes.setVisible(false);
+		premios = new Premios(this);
+		premios.setVisible(false);
+
+		premioBaloto = new PremioBaloto(this);
+		premioBaloto.setVisible(false);
+
 		historicoVentas = new HistoricoVentas(this);
 		historicoVentas.setVisible(false);
+
 		formCrearJuego = new FormCrearJuego(this);
 		formCrearJuego.setVisible(false);
 		formCrearSede = new FormCrearSede(this);
@@ -109,9 +123,20 @@ public class HomeController implements ActionListener {
 				abrirHomeApuestas();
 			}
 			// Home Reportes
-			else if(home.getBtnReportes() == e.getSource()) {
+			else if (home.getBtnReportes() == e.getSource()) {
 				abrirHomeReportes();
 			}
+			// Home Premios
+			else if (home.getBtnPremiacion() == e.getSource()) {
+				abrirHomePremios();
+			}
+			// PREMIACION
+			// Registrar Premio Baloto
+			else if (premios.getBtnRegistrarBaloto() == e.getSource()) {
+				premios.setVisible(false);
+				premioBaloto.setVisible(true);
+			}
+			// TOPS
 			// Top Sedes
 			else if (reportes.getBtnAbrirTopSedes() == e.getSource()) {
 				abrirHistoricoVentas();
@@ -147,11 +172,11 @@ public class HomeController implements ActionListener {
 				if (validarCamposBaloto()) {
 					if (contruirObjBaloto() != null) {
 						GestionBaloto objGestionBaloto = new GestionBaloto();
-						if(objGestionBaloto.crearBaloto(contruirObjBaloto())) {
+						if (objGestionBaloto.crearBaloto(contruirObjBaloto())) {
 							JOptionPane.showMessageDialog(null, "Baloto creado con exito", "Exitoso", 2);
 							cerrarFormBaloto();
 							objGestionBaloto.listarJuego();
-						}else {
+						} else {
 							JOptionPane.showMessageDialog(null, "Error al crear un baloto", "Error", 2);
 
 						}
@@ -161,38 +186,38 @@ public class HomeController implements ActionListener {
 				}
 			}
 			// Crear SuperAstro
-			else if(formCrearSuperAstro.getBtnCreaSuperAstro() == e.getSource()) {
-				if(validarCamposSuperAstro()) {
-					if(contruirObjSuperAstro()!=null) {
-						GestionSuperAstro objGestionSuperAstro = new GestionSuperAstro(); 
-						if(objGestionSuperAstro.crearSuperAstro(contruirObjSuperAstro())){
+			else if (formCrearSuperAstro.getBtnCreaSuperAstro() == e.getSource()) {
+				if (validarCamposSuperAstro()) {
+					if (contruirObjSuperAstro() != null) {
+						GestionSuperAstro objGestionSuperAstro = new GestionSuperAstro();
+						if (objGestionSuperAstro.crearSuperAstro(contruirObjSuperAstro())) {
 							JOptionPane.showMessageDialog(null, "Super Astro creado con exito", "Exitoso", 2);
 							cerrarFormSuperAstro();
 							objGestionSuperAstro.listarJuego();
-						}else {
+						} else {
 							JOptionPane.showMessageDialog(null, "Error al crear un Super Astro", "Error", 2);
 
 						}
 					}
-				}else {
+				} else {
 					JOptionPane.showMessageDialog(null, "Todos los campos deben ser diligenciados", "Error", 2);
 				}
 			}
-			//Crear Marcadores
-			else if(formCrearMarcador.getBtnCreaMarcador() == e.getSource()) {
-				if(validarCamposMarcador()) {
-					if(contruirObjMarcador()!=null) {
-						GestionMarcador objGestionMarcador= new GestionMarcador(); 
-						if(objGestionMarcador.crearMarcador(contruirObjMarcador())){
+			// Crear Marcadores
+			else if (formCrearMarcador.getBtnCreaMarcador() == e.getSource()) {
+				if (validarCamposMarcador()) {
+					if (contruirObjMarcador() != null) {
+						GestionMarcador objGestionMarcador = new GestionMarcador();
+						if (objGestionMarcador.crearMarcador(contruirObjMarcador())) {
 							JOptionPane.showMessageDialog(null, "Marcadores creados con exito", "Exitoso", 2);
 							cerrarFormSuperAstro();
 							objGestionMarcador.listarJuego();
-						}else {
+						} else {
 							JOptionPane.showMessageDialog(null, "Error al crear marcadores", "Error", 2);
 
 						}
 					}
-				}else {
+				} else {
 					JOptionPane.showMessageDialog(null, "Todos los campos deben ser diligenciados", "Error", 2);
 				}
 			}
@@ -294,6 +319,29 @@ public class HomeController implements ActionListener {
 				}
 			}
 
+			// Crear Premio Baloto
+			else if (premioBaloto.getBtnRegistrarNumero() == e.getSource()) {
+				if (campoDiligenciado(premioBaloto.getTxtNumero().getText())) {
+					if (validarRegistroPremioBaloto()) {
+						GestionPremiacionBaloto objPremiacionBaloto = new GestionPremiacionBaloto();
+						PremioBalotoModel objPremio = new PremioBalotoModel();
+						objPremio.setFecha(new Date());
+						objPremio.setNumero(Long.parseLong(premioBaloto.getTxtNumero().getText()));
+						List<String> listaGanadores = validarGanadoresBaloto(premioBaloto.getTxtNumero().getText());
+						objPremio.setListaGanadores(listaGanadores);
+						objPremiacionBaloto.crearBaloto(objPremio);
+						JOptionPane.showMessageDialog(null,
+								"Resultado registrado. \n Hay " + listaGanadores.size() + " ganadores.", "OK", 2);
+					} else {
+						JOptionPane.showMessageDialog(null, "Ya existe un registro para el dia de hoy.", "OK", 2);
+						premioBaloto.setVisible(false);
+						premios.setVisible(true);
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Todos los campos deben ser diligenciados", "Error", 2);
+				}
+			}
+
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, "Error en la aplicación", "Error", 2);
 		}
@@ -327,13 +375,18 @@ public class HomeController implements ActionListener {
 		inicio.setVisible(false);
 		apuestas.setVisible(true);
 	}
-	
+
 	public void abrirHomeReportes() {
 		inicio.setVisible(false);
 		reportes.setVisible(true);
 	}
-	
-	//TOPS
+
+	public void abrirHomePremios() {
+		inicio.setVisible(false);
+		premios.setVisible(true);
+	}
+
+	// TOPS
 	public void abrirHistoricoVentas() {
 		reportes.setVisible(false);
 		historicoVentas.setVisible(true);
@@ -365,12 +418,11 @@ public class HomeController implements ActionListener {
 		formCrearSuperAstro.setVisible(true);
 		apuestas.setVisible(false);
 	}
-	
+
 	public void cerrarFormSuperAstro() {
 		formCrearSuperAstro.setVisible(false);
 		apuestas.setVisible(true);
 	}
-	
 
 	public void abrirFormBaloto() {
 		formCrearBaloto.setVisible(true);
@@ -381,13 +433,12 @@ public class HomeController implements ActionListener {
 		formCrearBaloto.setVisible(false);
 		apuestas.setVisible(true);
 	}
-	
 
 	public void abrirFormMarcador() {
 		formCrearMarcador.setVisible(true);
 		apuestas.setVisible(false);
 	}
-	
+
 	public void cerrarFormMarcador() {
 		formCrearMarcador.setVisible(false);
 		apuestas.setVisible(true);
@@ -423,7 +474,7 @@ public class HomeController implements ActionListener {
 
 		return camposValidos;
 	}
-	
+
 	public boolean validarCamposMarcador() {
 		boolean camposValidos = true;
 		if (!campoDiligenciado(formCrearMarcador.getTxtCedula().getSelectedItem().toString()))
@@ -458,7 +509,7 @@ public class HomeController implements ActionListener {
 			camposValidos = false;
 		if (!campoDiligenciado(formCrearMarcador.getTxtPartido14().getSelectedItem().toString()))
 			camposValidos = false;
-		
+
 		return camposValidos;
 	}
 
@@ -481,7 +532,7 @@ public class HomeController implements ActionListener {
 			return null;
 		}
 	}
-	
+
 	public SuperAstro contruirObjSuperAstro() {
 		try {
 			SuperAstro objSuperAstro = new SuperAstro();
@@ -492,8 +543,7 @@ public class HomeController implements ActionListener {
 			objSuperAstro.setNumero(Integer.parseInt(formCrearSuperAstro.getTxtNumero().getText()));
 			objSuperAstro.setSigno(formCrearSuperAstro.getTxtSigno().getSelectedItem().toString());
 			if (formCrearSuperAstro.getTxtNumero().getText().length() != 4) {
-				JOptionPane.showMessageDialog(null, "El numero es invalido debe ser de 4 digitos", "Error",
-						2);
+				JOptionPane.showMessageDialog(null, "El numero es invalido debe ser de 4 digitos", "Error", 2);
 				return null;
 			}
 			return objSuperAstro;
@@ -502,6 +552,7 @@ public class HomeController implements ActionListener {
 			return null;
 		}
 	}
+
 	public Marcadores contruirObjMarcador() {
 		try {
 			Marcadores objMarcador = new Marcadores();
@@ -527,5 +578,38 @@ public class HomeController implements ActionListener {
 			JOptionPane.showMessageDialog(null, "El valor o numero son invalidos", "Error", 2);
 			return null;
 		}
+	}
+
+	public List<String> validarGanadoresBaloto(String numeroGanador) {
+		List<String> listaGanadores = new ArrayList<>();
+		GestionBaloto objGestionBaloto = new GestionBaloto();
+		List<Baloto> listaBaloto = objGestionBaloto.listarJuego();
+		for (Baloto baloto : listaBaloto) {
+			if (tomarFecha(baloto.getFecha()).equals(tomarFecha(new Date()))
+					&& baloto.getNumero().toString().equals(numeroGanador)) {
+				listaGanadores.add(baloto.getCedula().toString());
+			}
+		}
+		return listaGanadores;
+	}
+
+	public String tomarFecha(Date fecha) {
+		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+		return formatoFecha.format(fecha);
+
+	}
+
+	public boolean validarRegistroPremioBaloto() {
+		GestionPremiacionBaloto objGPB = new GestionPremiacionBaloto();
+		List<PremioBalotoModel> listaPB = objGPB.listarPremioBaloto();
+		Boolean existeRegistro = true;
+		for (PremioBalotoModel premioBalotoModel : listaPB) {
+			if (tomarFecha(premioBalotoModel.getFecha()).equals(tomarFecha(new Date()))) {
+				existeRegistro = false;
+				break;
+			}
+		}
+		return existeRegistro;
+
 	}
 }
