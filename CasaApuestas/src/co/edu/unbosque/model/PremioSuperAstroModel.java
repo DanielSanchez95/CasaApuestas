@@ -5,14 +5,13 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
-public class PremioBalotoModel implements Serializable {
+public class PremioSuperAstroModel implements Serializable {
 
 	private Date fecha;
 	private Long numero;
-	private String signo;
 	private List<String> listaGanadores;
 	
-	public PremioBalotoModel() {
+	public PremioSuperAstroModel() {
 	}
 
 	public Date getFecha() {
@@ -31,15 +30,6 @@ public class PremioBalotoModel implements Serializable {
 		this.numero = numero;
 	}
 
-	
-	public String getSigno() {
-		return signo;
-	}
-
-	public void setSigno(String signo) {
-		this.signo = signo;
-	}
-
 	public List<String> getListaGanadores() {
 		return listaGanadores;
 	}
@@ -47,5 +37,6 @@ public class PremioBalotoModel implements Serializable {
 	public void setListaGanadores(List<String> listaGanadores) {
 		this.listaGanadores = listaGanadores;
 	}
+
 	
 }

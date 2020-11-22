@@ -15,6 +15,7 @@ import co.edu.unbosque.model.CasaApuesta;
 import co.edu.unbosque.model.Juego;
 import co.edu.unbosque.model.Marcadores;
 import co.edu.unbosque.model.PremioBalotoModel;
+import co.edu.unbosque.model.PremioSuperAstroModel;
 import co.edu.unbosque.model.SedeCasaApuesta;
 import co.edu.unbosque.model.SuperAstro;
 import co.edu.unbosque.view.Apostadores;
@@ -30,6 +31,7 @@ import co.edu.unbosque.view.HomeCasaApuesta;
 import co.edu.unbosque.view.Inicio;
 import co.edu.unbosque.view.Juegos;
 import co.edu.unbosque.view.PremioBaloto;
+import co.edu.unbosque.view.PremioSuperAstro;
 import co.edu.unbosque.view.Premios;
 import co.edu.unbosque.view.Reportes;
 import co.edu.unbosque.view.Sedes;
@@ -46,6 +48,7 @@ public class HomeController implements ActionListener {
 	private Premios premios;
 
 	private PremioBaloto premioBaloto;
+	private PremioSuperAstro premiosuperAstro;
 
 	private HistoricoVentas historicoVentas;
 
@@ -77,6 +80,8 @@ public class HomeController implements ActionListener {
 
 		premioBaloto = new PremioBaloto(this);
 		premioBaloto.setVisible(false);
+		premiosuperAstro = new PremioSuperAstro(this);
+		premiosuperAstro.setVisible(false);
 
 		historicoVentas = new HistoricoVentas(this);
 		historicoVentas.setVisible(false);
@@ -135,6 +140,10 @@ public class HomeController implements ActionListener {
 			else if (premios.getBtnRegistrarBaloto() == e.getSource()) {
 				premios.setVisible(false);
 				premioBaloto.setVisible(true);
+			}
+			else if (premios.getBtnRegistrarSuperAstro() == e.getSource()) {
+				premios.setVisible(false);
+				premiosuperAstro.setVisible(true);
 			}
 			// TOPS
 			// Top Sedes
@@ -335,6 +344,30 @@ public class HomeController implements ActionListener {
 					} else {
 						JOptionPane.showMessageDialog(null, "Ya existe un registro para el dia de hoy.", "OK", 2);
 						premioBaloto.setVisible(false);
+						premios.setVisible(true);
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Todos los campos deben ser diligenciados", "Error", 2);
+				}
+			}
+			
+
+			// Crear Premio Super Astro
+			else if (premiosuperAstro.getBtnRegistrarNumero() == e.getSource()) {
+				if (campoDiligenciado(premiosuperAstro.getTxtNumero().getText())) {
+					if (validarRegistroSuperAstro()) {
+						GestionPremiacionSuperAstro objPremiacionSuperAstro = new GestionPremiacionSuperAstro();
+						PremioSuperAstroModel objPremio = new PremioSuperAstroModel();
+						objPremio.setFecha(new Date());
+						objPremio.setNumero(Long.parseLong(premiosuperAstro.getTxtNumero().getText()));
+						List<String> listaGanadores = validarGanadoresSuperAstro(premiosuperAstro.getTxtNumero().getText(), premiosuperAstro.getTxtSigno().getSelectedItem().toString());
+						objPremio.setListaGanadores(listaGanadores);
+						objPremiacionSuperAstro.crearPremioSuperAstro(objPremio);
+						JOptionPane.showMessageDialog(null,
+								"Resultado registrado. \n Hay " + listaGanadores.size() + " ganadores.", "OK", 2);
+					} else {
+						JOptionPane.showMessageDialog(null, "Ya existe un registro para el dia de hoy.", "OK", 2);
+						premiosuperAstro.setVisible(false);
 						premios.setVisible(true);
 					}
 				} else {
@@ -593,6 +626,21 @@ public class HomeController implements ActionListener {
 		return listaGanadores;
 	}
 
+	public List<String> validarGanadoresSuperAstro(String numeroGanador, String signoGanador) {
+		List<String> listaGanadores = new ArrayList<>();
+		GestionSuperAstro objGestionSuperAstro = new GestionSuperAstro();
+		List<SuperAstro> listaSuperAstro = objGestionSuperAstro.listarJuego();
+		for (SuperAstro superAstro : listaSuperAstro) {
+			if (tomarFecha(superAstro.getFecha()).equals(tomarFecha(new Date()))
+					&& String.valueOf(superAstro.getNumero()).equals(numeroGanador)
+					&& String.valueOf(superAstro.getSigno()).equals(signoGanador)) {
+				listaGanadores.add(superAstro.getCedula().toString());
+			}
+		}
+		return listaGanadores;
+	}
+
+	
 	public String tomarFecha(Date fecha) {
 		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
 		return formatoFecha.format(fecha);
@@ -611,5 +659,19 @@ public class HomeController implements ActionListener {
 		}
 		return existeRegistro;
 
+	}
+	
+	public boolean validarRegistroSuperAstro() {
+		GestionPremiacionSuperAstro objGPB = new GestionPremiacionSuperAstro();
+		List<PremioSuperAstroModel> listaPB = objGPB.listarPremioSuperAstro();
+		Boolean existeRegistro = true;
+		for (PremioSuperAstroModel premioBalotoModel : listaPB) {
+			if (tomarFecha(premioBalotoModel.getFecha()).equals(tomarFecha(new Date()))) {
+				existeRegistro = false;
+				break;
+			}
+		}
+		return existeRegistro;
+		
 	}
 }
