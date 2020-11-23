@@ -180,6 +180,7 @@ public class HomeController implements ActionListener {
 			}
 			// Formulario Creacion Apostador
 			else if (apostadores.getBtnAbrirCrearApostador() == e.getSource()) {
+				formCrearApostador.cargarApostadores();
 				abrirFormApostadores();
 			}
 			// Formulario Creacion SuperAstro
@@ -208,6 +209,8 @@ public class HomeController implements ActionListener {
 							cerrarFormBaloto();
 							//Actualiza la lista
 							objGestionBaloto.listarJuego();
+							formCrearBaloto.getTxtNumero().setText("");
+							formCrearBaloto.getTxtValor().setText("");
 						} else {
 							JOptionPane.showMessageDialog(null, "Error al crear un baloto", "Error", 2);
 
@@ -230,6 +233,8 @@ public class HomeController implements ActionListener {
 							cerrarFormSuperAstro();
 							//Actualiza la lista
 							objGestionSuperAstro.listarJuego();
+							formCrearSuperAstro.getTxtNumero().setText("");
+							formCrearSuperAstro.getTxtValor().setText("");
 						} else {
 							JOptionPane.showMessageDialog(null, "Error al crear un Super Astro", "Error", 2);
 
@@ -252,6 +257,7 @@ public class HomeController implements ActionListener {
 							cerrarFormSuperAstro();
 							//Actualiza la lista
 							objGestionMarcador.listarMarcadores();
+							formCrearMarcador.getTxtValor().setText("");
 						} else {
 							JOptionPane.showMessageDialog(null, "Error al crear marcadores", "Error", 2);
 
@@ -274,6 +280,8 @@ public class HomeController implements ActionListener {
 					if (objGestionSede.crearSede(objSede)) {
 						JOptionPane.showMessageDialog(null, "Sede creada con exito", "Exitoso", 2);
 						cerrarFormSedes();
+						formCrearSede.getTxtUbicacion().setText("");
+						formCrearSede.getTxtNumEmpleados().setText("");
 					} else {
 						JOptionPane.showMessageDialog(null, "Error al crear un sede", "Error", 2);
 					}
@@ -310,6 +318,8 @@ public class HomeController implements ActionListener {
 							JOptionPane.showMessageDialog(null, "Juego creado con exito", "Exitoso", 2);
 							//Refresca la lista
 							juegos.cargarJuegos();
+							formCrearJuego.getTxtNombreJuego().setText("");
+							formCrearJuego.getTxtPresupuestoJuego().setText("");
 						} else {
 							JOptionPane.showMessageDialog(null, "El presupuesto del juego supera los limites", "Error",
 									2);
@@ -362,6 +372,10 @@ public class HomeController implements ActionListener {
 							JOptionPane.showMessageDialog(null, "Apostador creado con exito", "Exitoso", 2);
 							//Actualiza la lista
 							apostadores.cargarApostadores();
+							formCrearApostador.getTxtNombre().setText("");
+							formCrearApostador.getTxtCedula().setText("");
+							formCrearApostador.getTxtDireccion().setText("");
+							formCrearApostador.getTxtCelular().setText("");
 						} else {
 							JOptionPane.showMessageDialog(null, "Error a crear apostador", "Error", 2);
 						}
@@ -376,17 +390,23 @@ public class HomeController implements ActionListener {
 
 			// Crear Premio Baloto
 			else if (premioBaloto.getBtnRegistrarNumero() == e.getSource()) {
+				//Valifa que el campo este diligenciado
 				if (campoDiligenciado(premioBaloto.getTxtNumero().getText())) {
+					//Valida que no existan registros para la fecha actual
 					if (validarRegistroPremioBaloto()) {
 						GestionPremiacionBaloto objPremiacionBaloto = new GestionPremiacionBaloto();
 						PremioBalotoModel objPremio = new PremioBalotoModel();
+						//Contruye objeto
 						objPremio.setFecha(new Date());
 						objPremio.setNumero(Long.parseLong(premioBaloto.getTxtNumero().getText()));
+						//Valida la cantidad de ganadores
 						List<String> listaGanadores = validarGanadoresBaloto(premioBaloto.getTxtNumero().getText());
 						objPremio.setListaGanadores(listaGanadores);
+						//Crea el registro
 						objPremiacionBaloto.crearPremioBaloto(objPremio);
 						JOptionPane.showMessageDialog(null,
 								"Resultado registrado. \n Hay " + listaGanadores.size() + " ganadores.", "OK", 2);
+						premioBaloto.getTxtNumero().setText("");
 					} else {
 						JOptionPane.showMessageDialog(null, "Ya existe un registro para el dia de hoy.", "OK", 2);
 						premioBaloto.setVisible(false);
@@ -399,19 +419,25 @@ public class HomeController implements ActionListener {
 
 			// Crear Premio Super Astro
 			else if (premiosuperAstro.getBtnRegistrarNumero() == e.getSource()) {
+				//Valida que el campo este diligenciado
 				if (campoDiligenciado(premiosuperAstro.getTxtNumero().getText())) {
+					//Valida que no existan registros para la fecha actual
 					if (validarRegistroSuperAstro()) {
 						GestionPremiacionSuperAstro objPremiacionSuperAstro = new GestionPremiacionSuperAstro();
 						PremioSuperAstroModel objPremio = new PremioSuperAstroModel();
+						//construye el objeto
 						objPremio.setFecha(new Date());
 						objPremio.setNumero(Long.parseLong(premiosuperAstro.getTxtNumero().getText()));
+						//Valida el listado de ganadores
 						List<String> listaGanadores = validarGanadoresSuperAstro(
 								premiosuperAstro.getTxtNumero().getText(),
 								premiosuperAstro.getTxtSigno().getSelectedItem().toString());
 						objPremio.setListaGanadores(listaGanadores);
+						//Crea el registro
 						objPremiacionSuperAstro.crearPremioSuperAstro(objPremio);
 						JOptionPane.showMessageDialog(null,
 								"Resultado registrado. \n Hay " + listaGanadores.size() + " ganadores.", "OK", 2);
+						premiosuperAstro.getTxtNumero().setText("");
 					} else {
 						JOptionPane.showMessageDialog(null, "Ya existe un registro para el dia de hoy.", "OK", 2);
 						premiosuperAstro.setVisible(false);
@@ -427,8 +453,8 @@ public class HomeController implements ActionListener {
 				if (validarRegistroMarcadores()) {
 					GestionPremiacionMarcador objPremiacionMarcadores = new GestionPremiacionMarcador();
 					PremioMarcadorModel objPremio = new PremioMarcadorModel();
+					//Construye el objeto
 					objPremio.setFecha(new Date());
-//					objPremio.setNumero(Long.parseLong(premiosuperAstro.getTxtNumero().getText()));
 					objPremio.setPartido1(premioMarcador.getTxtPartido1().getSelectedItem().toString());
 					objPremio.setPartido2(premioMarcador.getTxtPartido2().getSelectedItem().toString());
 					objPremio.setPartido3(premioMarcador.getTxtPartido3().getSelectedItem().toString());
@@ -443,9 +469,10 @@ public class HomeController implements ActionListener {
 					objPremio.setPartido12(premioMarcador.getTxtPartido12().getSelectedItem().toString());
 					objPremio.setPartido13(premioMarcador.getTxtPartido13().getSelectedItem().toString());
 					objPremio.setPartido14(premioMarcador.getTxtPartido14().getSelectedItem().toString());
-
+					//Valida el listado de ganadores
 					List<String> listaGanadores = validarGanadoresMarcadores(objPremio);
 					objPremio.setListaGanadores(listaGanadores);
+					//Crea el registro
 					objPremiacionMarcadores.crearPremioMarcador(objPremio);
 					JOptionPane.showMessageDialog(null,
 							"Resultado registrado. \n Hay " + listaGanadores.size() + " ganadores.", "OK", 2);
@@ -461,6 +488,9 @@ public class HomeController implements ActionListener {
 		}
 	}
 
+	/**
+	 * Valida que el campo no sea vacio 
+	 */
 	public boolean campoDiligenciado(String a) {
 		if (a.equals("")) {
 			return false;
@@ -470,99 +500,163 @@ public class HomeController implements ActionListener {
 	}
 
 	// HOME
+	/**
+	 * Abre la ventana de Juegos
+	 */
 	public void abrirHomeJuegos() {
 		inicio.setVisible(false);
 		juegos.setVisible(true);
 	}
 
+	/**
+	 * Abre la ventana de Sedes
+	 */
 	public void abrirHomeSedes() {
 		inicio.setVisible(false);
 		sedes.setVisible(true);
 	}
 
+	/**
+	 * Abre la ventana de Apostadores
+	 */
 	public void abrirHomeApostadores() {
 		inicio.setVisible(false);
 		apostadores.setVisible(true);
 	}
 
+	/**
+	 * Abre la ventana de Apuestas
+	 */
 	public void abrirHomeApuestas() {
 		inicio.setVisible(false);
 		apuestas.setVisible(true);
 	}
 
+	/**
+	 * Abre la ventana de Reportes
+	 */
 	public void abrirHomeReportes() {
 		inicio.setVisible(false);
 		reportes.setVisible(true);
 	}
 
+	/**
+	 * Abre la ventana de Premios 
+	 */
 	public void abrirHomePremios() {
 		inicio.setVisible(false);
 		premios.setVisible(true);
 	}
 
 	// TOPS
+
+	/**
+	 * Abre la ventana de Historico de ventas 
+	 */
 	public void abrirHistoricoVentas() {
 		reportes.setVisible(false);
 		historicoVentas.setVisible(true);
 	}
 	
+
+	/**
+	 * Abre la ventana de top de sedes 
+	 */
 	public void abrirTopSedes() {
 		reportes.setVisible(false);
 		topSedes.setVisible(true);
 	}
 
 	// FORMULARIOS
+
+	/**
+	 * Abre el formulario de juegos 
+	 */
 	public void abrirFormJuegos() {
 		formCrearJuego.setVisible(true);
 		juegos.setVisible(false);
 	}
 
+	/**
+	 * Abre el formulario de Sedes 
+	 */
 	public void abrirFormSedes() {
 		formCrearSede.setVisible(true);
 		sedes.setVisible(false);
 	}
 
+	/**
+	 * Cierra el formulario de sedes 
+	 */
 	public void cerrarFormSedes() {
 		formCrearSede.setVisible(false);
 		sedes.setVisible(true);
 		sedes.cargarSedes();
 	}
 
+
+	/**
+	 * Abre el formulario de apostadores 
+	 */
 	public void abrirFormApostadores() {
 		formCrearApostador.setVisible(true);
 		apostadores.setVisible(false);
 	}
 
+	/**
+	 * Abre el formulario de super astros 
+	 */
 	public void abrirFormSuperAstro() {
 		formCrearSuperAstro.setVisible(true);
 		apuestas.setVisible(false);
 	}
 
+	/**
+	 * cierra el formulario de super astro
+	 */
 	public void cerrarFormSuperAstro() {
 		formCrearSuperAstro.setVisible(false);
 		apuestas.setVisible(true);
 	}
 
+	/**
+	 * Abre el formulario de baloto 
+	 */
 	public void abrirFormBaloto() {
 		formCrearBaloto.setVisible(true);
 		apuestas.setVisible(false);
 	}
 
+
+	/**
+	 * Cierra el formulario de baloto 
+	 */
 	public void cerrarFormBaloto() {
 		formCrearBaloto.setVisible(false);
 		apuestas.setVisible(true);
 	}
 
+
+	/**
+	 * Abre el formulario de Marcadores 
+	 */
 	public void abrirFormMarcador() {
 		formCrearMarcador.setVisible(true);
 		apuestas.setVisible(false);
 	}
 
+
+	/**
+	 * Cierra el formulario de Marcadores 
+	 */
 	public void cerrarFormMarcador() {
 		formCrearMarcador.setVisible(false);
 		apuestas.setVisible(true);
 	}
 
+	/**
+	 * Valida los campos requeridos de las Sedes 
+	 */
 	public boolean validarCamposSedes() {
 		boolean camposValidos = true;
 		if (!campoDiligenciado(formCrearSede.getTxtUbicacion().getText()))
@@ -572,6 +666,9 @@ public class HomeController implements ActionListener {
 		return camposValidos;
 	}
 
+	/**
+	 * Valida los campos requeridos del baloto 
+	 */
 	public boolean validarCamposBaloto() {
 		boolean camposValidos = true;
 		if (!campoDiligenciado(formCrearBaloto.getTxtNumero().getText()))
@@ -582,6 +679,10 @@ public class HomeController implements ActionListener {
 		return camposValidos;
 	}
 
+
+	/**
+	 * Valida los campos requeridos del Super Astro 
+	 */
 	public boolean validarCamposSuperAstro() {
 		boolean camposValidos = true;
 		if (!campoDiligenciado(formCrearSuperAstro.getTxtNumero().getText()))
@@ -594,6 +695,9 @@ public class HomeController implements ActionListener {
 		return camposValidos;
 	}
 
+	/**
+	 * Valida los campos requeridos de los Marcadores 
+	 */
 	public boolean validarCamposMarcador() {
 		boolean camposValidos = true;
 		if (!campoDiligenciado(formCrearMarcador.getTxtCedula().getSelectedItem().toString()))
@@ -632,6 +736,9 @@ public class HomeController implements ActionListener {
 		return camposValidos;
 	}
 
+	/**
+	 * Construye el objeto Baloto 
+	 */
 	public Baloto contruirObjBaloto() {
 		try {
 			Baloto objBaloto = new Baloto();
@@ -652,6 +759,9 @@ public class HomeController implements ActionListener {
 		}
 	}
 
+	/**
+	 * Construye el objeto Super Astro 
+	 */
 	public SuperAstro contruirObjSuperAstro() {
 		try {
 			SuperAstro objSuperAstro = new SuperAstro();
@@ -672,6 +782,9 @@ public class HomeController implements ActionListener {
 		}
 	}
 
+	/**
+	 * Construye el objeto Marcador 
+	 */
 	public Marcadores contruirObjMarcador() {
 		try {
 			Marcadores objMarcador = new Marcadores();
@@ -699,6 +812,9 @@ public class HomeController implements ActionListener {
 		}
 	}
 
+	/**
+	 * Valida la lista de ganadores de Baloto  
+	 */
 	public List<String> validarGanadoresBaloto(String numeroGanador) {
 		List<String> listaGanadores = new ArrayList<>();
 		GestionBaloto objGestionBaloto = new GestionBaloto();
@@ -712,6 +828,9 @@ public class HomeController implements ActionListener {
 		return listaGanadores;
 	}
 
+	/**
+	 * Valida la lista de ganadores de SuperAstro  
+	 */
 	public List<String> validarGanadoresSuperAstro(String numeroGanador, String signoGanador) {
 		List<String> listaGanadores = new ArrayList<>();
 		GestionSuperAstro objGestionSuperAstro = new GestionSuperAstro();
@@ -726,7 +845,9 @@ public class HomeController implements ActionListener {
 		return listaGanadores;
 	}
 	
-
+	/**
+	 * Valida la lista de ganadores de Marcadores  
+	 */
 	public List<String> validarGanadoresMarcadores(PremioMarcadorModel objPremioMarcadorModel) {
 		List<String> listaGanadores = new ArrayList<>();
 		GestionMarcador objGestionMarcador = new GestionMarcador();
@@ -753,17 +874,26 @@ public class HomeController implements ActionListener {
 		return listaGanadores;
 	}
 
+	/**
+	 * Da formato a las fechas 
+	 */
 	public String tomarFecha(Date fecha) {
 		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
 		return formatoFecha.format(fecha);
 
 	}
 
+	/**
+	 * Valida que no exista un registro de premio para la fecha actual 
+	 */
 	public boolean validarRegistroPremioBaloto() {
 		GestionPremiacionBaloto objGPB = new GestionPremiacionBaloto();
+		// lista el listado de premios
 		List<PremioBalotoModel> listaPB = objGPB.listarPremioBaloto();
 		Boolean existeRegistro = true;
+		//Recorre el listado de premios
 		for (PremioBalotoModel premioBalotoModel : listaPB) {
+			//Valida que no exista un registro con la fecha de actual
 			if (tomarFecha(premioBalotoModel.getFecha()).equals(tomarFecha(new Date()))) {
 				existeRegistro = false;
 				break;
@@ -773,11 +903,17 @@ public class HomeController implements ActionListener {
 
 	}
 
+	/**
+	 * Valida que no exista un registro de premio para la fecha actual 
+	 */
 	public boolean validarRegistroSuperAstro() {
 		GestionPremiacionSuperAstro objGPB = new GestionPremiacionSuperAstro();
+		// lista el listado de premios
 		List<PremioSuperAstroModel> listaPB = objGPB.listarPremioSuperAstro();
 		Boolean existeRegistro = true;
+		//Recorre el listado de premios
 		for (PremioSuperAstroModel premioBalotoModel : listaPB) {
+			//Valida que no exista un registro con la fecha de actual
 			if (tomarFecha(premioBalotoModel.getFecha()).equals(tomarFecha(new Date()))) {
 				existeRegistro = false;
 				break;
@@ -786,12 +922,18 @@ public class HomeController implements ActionListener {
 		return existeRegistro;
 
 	}
-	
+
+	/**
+	 * Valida que no exista un registro de premio para la fecha actual 
+	 */	
 	public boolean validarRegistroMarcadores() {
 		GestionPremiacionMarcador objGPM = new GestionPremiacionMarcador();
+		// lista el listado de premios
 		List<PremioMarcadorModel> listaPM = objGPM.listarPremioMarcador();
 		Boolean existeRegistro = true;
+		//Recorre el listado de premios
 		for (PremioMarcadorModel premioMarcadorModel : listaPM) {
+			//Valida que no exista un registro con la fecha de actual
 			if (tomarFecha(premioMarcadorModel.getFecha()).equals(tomarFecha(new Date()))) {
 				existeRegistro = false;
 				break;

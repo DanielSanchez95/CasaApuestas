@@ -33,12 +33,12 @@ public class FormCrearApostador extends JFrame {
 //	JComboBox<String> txtTipoJuego = new JComboBox<String>();
 //	JTextArea txtPresupuestoJuego = new JTextArea();
 	JButton btnCreatApostador = new JButton();
+	JPanel panel = new JPanel();
 
 	public FormCrearApostador(ActionListener controller) {
 		super();
 		listener = controller;
 		this.setSize(600, 600);
-		JPanel panel = new JPanel();
 		this.setTitle(" Crear Juego");
 		this.getContentPane().add(panel);
 		panel.add(lblNombre);
@@ -129,6 +129,19 @@ public class FormCrearApostador extends JFrame {
 		this.setVisible(true);
 	}
 
+	public void cargarApostadores() {
+		txtSede = null;
+		txtSede = new JComboBox<String>();
+		txtSede.setBounds(350, 230, 160, 20);
+		txtSede.setBackground(Color.WHITE);
+		txtSede.setVisible(true);
+		GestionSede objSede = new GestionSede();
+		for (SedeCasaApuesta element : objSede.listarSedes()) {
+			txtSede.addItem(element.getUbicacion());
+		}
+		panel.add(txtSede);
+	}
+
 	public JButton getBtnCreatApostador() {
 		return btnCreatApostador;
 	}
@@ -177,6 +190,4 @@ public class FormCrearApostador extends JFrame {
 		this.txtCelular = txtCelular;
 	}
 
-	
-	
 }

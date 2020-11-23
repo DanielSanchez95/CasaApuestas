@@ -83,7 +83,7 @@ public class TopSedes extends JFrame {
 
 	public void getTopSedesMarcadores(List<SedeCasaApuesta> listaSedes) {
 		GestionMarcador objGM = new GestionMarcador();
-		List<Marcadores> listaMarcadores = objGM.listarJuego();
+		List<Marcadores> listaMarcadores = objGM.listarMarcadores();
 		for (Marcadores marcadores : listaMarcadores) {
 			Integer valor = mapSedes.get(marcadores.getSede());
 			if (valor == null)
