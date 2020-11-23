@@ -130,16 +130,11 @@ public class FormCrearApostador extends JFrame {
 	}
 
 	public void cargarApostadores() {
-		txtSede = null;
-		txtSede = new JComboBox<String>();
-		txtSede.setBounds(350, 230, 160, 20);
-		txtSede.setBackground(Color.WHITE);
-		txtSede.setVisible(true);
+		txtSede.removeAllItems();
 		GestionSede objSede = new GestionSede();
 		for (SedeCasaApuesta element : objSede.listarSedes()) {
 			txtSede.addItem(element.getUbicacion());
 		}
-		panel.add(txtSede);
 	}
 
 	public JButton getBtnCreatApostador() {

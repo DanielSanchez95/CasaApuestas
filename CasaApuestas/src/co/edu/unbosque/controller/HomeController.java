@@ -135,6 +135,12 @@ public class HomeController implements ActionListener {
 			// Home Apuestas
 			else if (home.getBtnApuestas() == e.getSource()) {
 				abrirHomeApuestas();
+				formCrearBaloto.cargarSedes();
+				formCrearBaloto.cargarApostador();
+				formCrearSuperAstro.cargarSedes();
+				formCrearSuperAstro.cargarApostador();
+				formCrearMarcador.cargarSedes();
+				formCrearMarcador.cargarApostador();
 			}
 			// Home Reportes
 			else if (home.getBtnReportes() == e.getSource()) {
@@ -211,6 +217,7 @@ public class HomeController implements ActionListener {
 							objGestionBaloto.listarJuego();
 							formCrearBaloto.getTxtNumero().setText("");
 							formCrearBaloto.getTxtValor().setText("");
+							
 						} else {
 							JOptionPane.showMessageDialog(null, "Error al crear un baloto", "Error", 2);
 

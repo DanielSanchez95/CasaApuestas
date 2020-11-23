@@ -380,6 +380,21 @@ public class FormCrearMarcador extends JFrame {
 	}
 
 	
+	public void cargarSedes() {
+		txtSede.removeAllItems();
+		GestionSede objSede = new GestionSede();
+		for (SedeCasaApuesta element : objSede.listarSedes()) {
+			txtSede.addItem(element.getUbicacion());
+		}
+	}
+
+	public void cargarApostador() {
+		txtCedula.removeAllItems();
+		GestionApostador objApostador = new GestionApostador();
+		for (Apostador element : objApostador.listarApostadores()) {
+			txtCedula.addItem(String.valueOf(element.getCedula()));
+		}
+	}
 	
 	public FormCrearMarcador() throws HeadlessException {
 		super();
