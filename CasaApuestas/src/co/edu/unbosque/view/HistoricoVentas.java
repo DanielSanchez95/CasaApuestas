@@ -148,33 +148,7 @@ public class HistoricoVentas extends JFrame {
 			if (tomarDiasDiferencia(superAstro.getFecha(), new Date()) <= 5) {
 				newListSuperAstro.add(superAstro);
 			}
-//			Integer val = topMap.get(superAstro.getSede());
-//			if(val==null)
-//				val=0;
-//			topMap.put(superAstro.getSede(), ++val);
 		}
-
-//		GestionBaloto objGestionBaloto = new GestionBaloto();
-//		List<Baloto> listBaloto = objGestionBaloto.listarJuego();
-//		for (Baloto baloto : listBaloto) {
-//			Integer val = topMap.get(baloto.getSede());
-//			if(val==null)
-//				val=0;
-//			topMap.put(baloto.getSede(), ++val);
-//		}
-//		
-//
-//		GestionMarcador objGestionMarcador = new GestionMarcador();
-//		List<Marcadores> listMarcador = objGestionMarcador.listarJuego();
-//		for (Marcadores marcador : listMarcador) {
-//			Integer val = topMap.get(marcador.getSede());
-//			if(val==null)
-//				val=0;
-//			topMap.put(marcador.getSede(), ++val);
-//		}
-//		
-//		GestionSede objGestionSedes = new GestionSede(); 
-//		List<SedeCasaApuesta> listaSedes = objGestionSedes.listarSedes();
 		return newListSuperAstro;
 	}
 
@@ -199,7 +173,7 @@ public class HistoricoVentas extends JFrame {
 		List<Marcadores> newListMarcadore = new ArrayList<>();
 		
 		GestionMarcador objGestionMarcador = new GestionMarcador();
-		List<Marcadores> listMarcadores = objGestionMarcador.listarJuego();
+		List<Marcadores> listMarcadores = objGestionMarcador.listarMarcadores();
 		for (Marcadores marcador : listMarcadores) {
 			if (tomarDiasDiferencia(marcador.getFecha(), new Date()) <= 5) {
 				newListMarcadore.add(marcador);
@@ -212,17 +186,13 @@ public class HistoricoVentas extends JFrame {
 		Calendar cal1 = new GregorianCalendar();
 		Calendar cal2 = new GregorianCalendar();
 
-//	     SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
-
-//	     Date date = sdf.parse();
 		cal1.setTime(fechaInicio);
-//	     date = sdf.parse("your second date");
 		cal2.setTime(fechaFin);
 
-		return daysBetween(cal1.getTime(), cal2.getTime());
+		return diferenciaDias(cal1.getTime(), cal2.getTime());
 	}
 
-	public int daysBetween(Date d1, Date d2) {
+	public int diferenciaDias(Date d1, Date d2) {
 		return (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
 	}
 

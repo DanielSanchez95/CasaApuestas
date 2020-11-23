@@ -113,9 +113,9 @@ public class HomeController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		try {
 			if (inicio.getBtnRegistrar() == e.getSource()) {
+				//Asiugna el presupuesto a la instacia del objeto casa
 				GestionCasaApuesta.getInstance()
 						.asignarPresupuesto(Double.parseDouble(inicio.getTxtPresupuesto().getText()));
-				CasaApuesta obj = GestionCasaApuesta.getInstance().getCasa();
 				inicio.setVisible(false);
 				home.setVisible(true);
 			}
@@ -197,12 +197,16 @@ public class HomeController implements ActionListener {
 			// CREACION
 			// Crear Baloto
 			else if (formCrearBaloto.getBtnCreatBaloto() == e.getSource()) {
+				//Valida que los campos requeridos esten diligenciados 
 				if (validarCamposBaloto()) {
+					//Contruye el objeto y valida que no sea nulo
 					if (contruirObjBaloto() != null) {
 						GestionBaloto objGestionBaloto = new GestionBaloto();
+						//Crea el registro y valida si es exitoso
 						if (objGestionBaloto.crearBaloto(contruirObjBaloto())) {
 							JOptionPane.showMessageDialog(null, "Baloto creado con exito", "Exitoso", 2);
 							cerrarFormBaloto();
+							//Actualiza la lista
 							objGestionBaloto.listarJuego();
 						} else {
 							JOptionPane.showMessageDialog(null, "Error al crear un baloto", "Error", 2);
@@ -215,12 +219,16 @@ public class HomeController implements ActionListener {
 			}
 			// Crear SuperAstro
 			else if (formCrearSuperAstro.getBtnCreaSuperAstro() == e.getSource()) {
+				//Valida campos requeridos
 				if (validarCamposSuperAstro()) {
+					//Contruye el objeto y valida que no sea nulo
 					if (contruirObjSuperAstro() != null) {
 						GestionSuperAstro objGestionSuperAstro = new GestionSuperAstro();
+						//Crea el registro
 						if (objGestionSuperAstro.crearSuperAstro(contruirObjSuperAstro())) {
 							JOptionPane.showMessageDialog(null, "Super Astro creado con exito", "Exitoso", 2);
 							cerrarFormSuperAstro();
+							//Actualiza la lista
 							objGestionSuperAstro.listarJuego();
 						} else {
 							JOptionPane.showMessageDialog(null, "Error al crear un Super Astro", "Error", 2);
@@ -233,13 +241,17 @@ public class HomeController implements ActionListener {
 			}
 			// Crear Marcadores
 			else if (formCrearMarcador.getBtnCreaMarcador() == e.getSource()) {
+				//Valida los campos requeridos
 				if (validarCamposMarcador()) {
+					//Construye el objeto
 					if (contruirObjMarcador() != null) {
 						GestionMarcador objGestionMarcador = new GestionMarcador();
+						//Crea el registro
 						if (objGestionMarcador.crearMarcador(contruirObjMarcador())) {
 							JOptionPane.showMessageDialog(null, "Marcadores creados con exito", "Exitoso", 2);
 							cerrarFormSuperAstro();
-							objGestionMarcador.listarJuego();
+							//Actualiza la lista
+							objGestionMarcador.listarMarcadores();
 						} else {
 							JOptionPane.showMessageDialog(null, "Error al crear marcadores", "Error", 2);
 
@@ -251,11 +263,14 @@ public class HomeController implements ActionListener {
 			}
 			// Crear Sede
 			else if (formCrearSede.getBtnCreatSede() == e.getSource()) {
+				//Valida los campos requeridos
 				if (validarCamposSedes()) {
+					//Crea los objetos
 					SedeCasaApuesta objSede = new SedeCasaApuesta();
 					objSede.setUbicacion(formCrearSede.getTxtUbicacion().getText());
 					objSede.setNumeroEmpleados(Integer.parseInt(formCrearSede.getTxtNumEmpleados().getText()));
 					GestionSede objGestionSede = new GestionSede();
+					//Crea el registro
 					if (objGestionSede.crearSede(objSede)) {
 						JOptionPane.showMessageDialog(null, "Sede creada con exito", "Exitoso", 2);
 						cerrarFormSedes();
@@ -272,11 +287,13 @@ public class HomeController implements ActionListener {
 					GestionJuegos objGestJuegos = new GestionJuegos();
 					Juego objJuego = new Juego();
 					boolean juegoValido = true;
+					//Valida que no este nulo el registro
 					if (campoDiligenciado(formCrearJuego.getTxtNombreJuego().getText())) {
 						objJuego.setNombreJuego(formCrearJuego.getTxtNombreJuego().getText());
 					} else {
 						juegoValido = false;
 					}
+					//Valida que no este nulo el registro
 					if (campoDiligenciado(formCrearJuego.getTxtPresupuestoJuego().getText())) {
 						objJuego.setPresupuestoJuego(
 								Double.parseDouble(formCrearJuego.getTxtPresupuestoJuego().getText()));
@@ -284,11 +301,14 @@ public class HomeController implements ActionListener {
 						juegoValido = false;
 					}
 					objJuego.setTipoJuego(String.valueOf(formCrearJuego.getTxtTipoJuego().getSelectedItem()));
+					//Valida que los campos requeridos no esten vacios
 					if (juegoValido) {
+						//Crea el registro
 						if (objGestJuegos.crearJuegos(objJuego)) {
 							formCrearJuego.setVisible(false);
 							juegos.setVisible(true);
 							JOptionPane.showMessageDialog(null, "Juego creado con exito", "Exitoso", 2);
+							//Refresca la lista
 							juegos.cargarJuegos();
 						} else {
 							JOptionPane.showMessageDialog(null, "El presupuesto del juego supera los limites", "Error",
@@ -308,32 +328,39 @@ public class HomeController implements ActionListener {
 
 					GestionApostador objGestionApostador = new GestionApostador();
 					Apostador objApostador = new Apostador();
+					//Valida que no este nulo el registro
 					if (campoDiligenciado(formCrearApostador.getTxtCedula().getText())) {
 						objApostador.setCedula(Long.parseLong(formCrearApostador.getTxtCedula().getText()));
 					} else {
 						apostadorValido = false;
 					}
+					//Valida que no este nulo el registro
 					if (campoDiligenciado(formCrearApostador.getTxtNombre().getText())) {
 						objApostador.setNombre(formCrearApostador.getTxtNombre().getText());
 					} else {
 						apostadorValido = false;
 					}
+					//Valida que no este nulo el registro
 					if (campoDiligenciado(formCrearApostador.getTxtCelular().getText())) {
 						objApostador.setCelular(Long.parseLong(formCrearApostador.getTxtCelular().getText()));
 					} else {
 						apostadorValido = false;
 					}
+					//Valida que no este nulo el registro
 					if (campoDiligenciado(formCrearApostador.getTxtDireccion().getText())) {
 						objApostador.setDireccion(formCrearApostador.getTxtDireccion().getText());
 					} else {
 						apostadorValido = false;
 					}
 					objApostador.setSede(String.valueOf(formCrearApostador.getTxtSede().getSelectedItem()));
+					//Valida que los campos requeridos no esten vacios
 					if (apostadorValido) {
+						//Crea el registro
 						if (objGestionApostador.crearApostador(objApostador)) {
 							formCrearApostador.setVisible(false);
 							apostadores.setVisible(true);
 							JOptionPane.showMessageDialog(null, "Apostador creado con exito", "Exitoso", 2);
+							//Actualiza la lista
 							apostadores.cargarApostadores();
 						} else {
 							JOptionPane.showMessageDialog(null, "Error a crear apostador", "Error", 2);
@@ -357,7 +384,7 @@ public class HomeController implements ActionListener {
 						objPremio.setNumero(Long.parseLong(premioBaloto.getTxtNumero().getText()));
 						List<String> listaGanadores = validarGanadoresBaloto(premioBaloto.getTxtNumero().getText());
 						objPremio.setListaGanadores(listaGanadores);
-						objPremiacionBaloto.crearBaloto(objPremio);
+						objPremiacionBaloto.crearPremioBaloto(objPremio);
 						JOptionPane.showMessageDialog(null,
 								"Resultado registrado. \n Hay " + listaGanadores.size() + " ganadores.", "OK", 2);
 					} else {
@@ -703,7 +730,7 @@ public class HomeController implements ActionListener {
 	public List<String> validarGanadoresMarcadores(PremioMarcadorModel objPremioMarcadorModel) {
 		List<String> listaGanadores = new ArrayList<>();
 		GestionMarcador objGestionMarcador = new GestionMarcador();
-		List<Marcadores> listaMarcadores = objGestionMarcador.listarJuego();
+		List<Marcadores> listaMarcadores = objGestionMarcador.listarMarcadores();
 		for (Marcadores marcador: listaMarcadores) {
 			if (tomarFecha(marcador.getFecha()).equals(tomarFecha(new Date()))
 					&& String.valueOf(marcador.getPartido1()).equals(objPremioMarcadorModel.getPartido1().toString())

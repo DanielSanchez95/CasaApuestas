@@ -9,24 +9,39 @@ import co.edu.unbosque.persistencia.PersistenciaMarcador;
 public class GestionMarcador {
 	
 	private PersistenciaMarcador persistencia;
-	private List<Marcadores> listaSuperAstro= new ArrayList<>();
+	private List<Marcadores> listaMarcadores= new ArrayList<>();
 
+	/**
+	 * Instancia el objeto PersistenciaMarcador
+	 * Llena la lista con los resultados del archivo
+	 */
 	public GestionMarcador() {
 		persistencia = new PersistenciaMarcador();
-		this.listaSuperAstro = persistencia.leerArchivo();
+		this.listaMarcadores = persistencia.leerArchivo();
 	}
 
+	
+	/**
+	 * Se encarga de crear un Marcador 
+	 * Recibe un objeto Marcador
+	 */
 	public boolean crearMarcador(Marcadores objJuego) {
-		this.listaSuperAstro = this.listarJuego();
-		listaSuperAstro.add(objJuego);
-		if(persistencia.guardarEnArchivo(listaSuperAstro)) {
+		//Llama el metodo listarMarcadores
+		this.listaMarcadores = this.listarMarcadores();
+		//Agrega a la lusta el objeti recibido
+		listaMarcadores.add(objJuego);
+		//Se guarda en el archivo la lista con el nuevo objeto si todo es exitoso retorna tru de lo contrario false
+		if(persistencia.guardarEnArchivo(listaMarcadores)) {
 			return true;
 		}else {
 			return false;
 		}
 	}
 	
-	public List<Marcadores> listarJuego(){
+	/**
+	 * Se encarga de leer el archivo y devuelve el listado de marcadores
+	 */
+	public List<Marcadores> listarMarcadores(){
 		return persistencia.leerArchivo();
 	}
 }
